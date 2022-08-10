@@ -95,7 +95,7 @@ async def gen_link_batch(bot, message):
             continue
         try:
             file_type = msg.media
-            file_id, ref = unpack_new_file_id((getattr(replied, file_type.value)).file_id)
+            file = getattr(msg, file_type.value)
             caption = getattr(msg, 'caption', '')
             if caption:
                 caption = caption.html
