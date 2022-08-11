@@ -109,7 +109,7 @@ async def who_is(client, message):
             quote=True,
             reply_markup=reply_markup,
             caption=message_out_str,
-            parse_mode=enums.ParseMode.HTML
+            parse_mode=enums.ParseMode.HTML,
             disable_notification=True
         )
         os.remove(local_user_photo)
