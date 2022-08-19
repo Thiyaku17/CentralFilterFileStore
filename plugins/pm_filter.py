@@ -41,7 +41,7 @@ async def give_filter(client, message):
 async def next_page(bot, query):
     ident, req, key, offset = query.data.split("_")
     if int(req) not in [query.from_user.id, 0]:
-        return await query.answer("Don't be dependent..Type movie/series name in our group", show_alert=True)
+        return await query.answer("Don't be dependent on others..Type the movie/series name that you need in our group", show_alert=True)
     try:
         offset = int(offset)
     except:
@@ -120,7 +120,7 @@ async def next_page(bot, query):
 async def advantage_spoll_choker(bot, query):
     _, user, movie_ = query.data.split('#')
     if int(user) != 0 and query.from_user.id != int(user):
-        return await query.answer("Search The Correct Spelling In google.com", show_alert=True)
+        return await query.answer("Search The Correct Movie/Series Spelling In google.com and then type in our group once more", show_alert=True)
     if movie_ == "close_spellcheck":
         return await query.message.delete()
     movies = SPELL_CHECK.get(query.message.reply_to_message.id)
@@ -135,7 +135,7 @@ async def advantage_spoll_choker(bot, query):
             k = (movie, files, offset, total_results)
             await auto_filter(bot, query, k)
         else:
-            k = await query.message.edit('<b>Type the movie name in @CentralLinks_Contactbot ... Admin will add it soon</b>')
+            k = await query.message.edit("<b>Search The Correct Movie/Series Spelling in Google.com and then type in our group once more and also it doesn't respond please Type the movie/series name in @CentralLinks_Contactbot ... \nAdmin will try to add it soon</b>")
             await asyncio.sleep(10)
             await k.delete()
 
@@ -373,7 +373,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
     elif query.data.startswith("checksub"):
         if AUTH_CHANNEL and not await is_subscribed(client, query):
-            await query.answer("I Like Your Smartness, But Don't Be Oversmart 😒", show_alert=True)
+            await query.answer("I Like Your Smartness, But Don't Be Oversmart 😒,Join - @Central_Links", show_alert=True)
             return
         ident, file_id = query.data.split("#")
         files_ = await get_file_details(file_id)
@@ -407,7 +407,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('🔍 Search Movies/Series', switch_inline_query_current_chat='')
             ],[
             InlineKeyboardButton('🎞 Main Channel', url='https://t.me/central_links'),
-            InlineKeyboardButton('Request Group 🔗', url='https://t.me/central_request')
+            InlineKeyboardButton('Request Group 🔗', url='https://t.me/centralrequest')
             ],[
             InlineKeyboardButton('Support 💁', url='https://t.me/CentralLinks_Contactbot'),
             InlineKeyboardButton('About Meh 📬', callback_data='about')
@@ -764,7 +764,7 @@ async def advantage_spell_chok(msg):
     movielist += [(re.sub(r'(\-|\(|\)|_)', '', i, flags=re.IGNORECASE)).strip() for i in gs_parsed]
     movielist = list(dict.fromkeys(movielist))  # removing duplicates
     if not movielist:
-        k = await msg.reply("I couldn't find anything related to that. Check your spelling OR Search in google.com")
+        k = await msg.reply("<b>I couldn't find anything related to that. Check your spelling OR Search in google.com</b>")
         await asyncio.sleep(8)
         await k.delete()
         return
@@ -776,7 +776,7 @@ async def advantage_spell_chok(msg):
         )
     ] for k, movie in enumerate(movielist)]
     btn.append([InlineKeyboardButton(text="Close", callback_data=f'spolling#{user}#close_spellcheck')])
-    await msg.reply("I couldn't find anything related to that\nSearch in google.com\nDid you mean any one of these?",
+    await msg.reply("<b>I couldn't find anything related to that\nSearch in google.com\nDid you mean any one of these? \nPress the only Movie/Series name ONCE (without year)</b>",
                     reply_markup=InlineKeyboardMarkup(btn))
 
 
