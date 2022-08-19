@@ -26,7 +26,7 @@ async def start(client, message):
                 InlineKeyboardButton('🤖 Updates', url='https://t.me/central_links')
             ],
             [
-                InlineKeyboardButton('Join Our Group 🌏', url=f"https://t.me/central_request"),
+                InlineKeyboardButton('Join Our Group 🌏', url=f"https://t.me/centralrequest"),
             ]
             ]
         reply_markup = InlineKeyboardMarkup(buttons)
@@ -45,7 +45,7 @@ async def start(client, message):
             InlineKeyboardButton('🔍 Search Movies/Series', switch_inline_query_current_chat='')
             ],[
             InlineKeyboardButton('Main Channel 🎞', url='https://t.me/central_links'),
-            InlineKeyboardButton('Request Group 🌏', url='https://t.me/central_request')
+            InlineKeyboardButton('Request Group 🌏', url='https://t.me/centralrequest')
             ],[
             InlineKeyboardButton('Support 💁', url='https://t.me/centrallinks_contactbot'),
             InlineKeyboardButton('About Meh ✨', callback_data='about')
@@ -81,7 +81,7 @@ async def start(client, message):
                 btn.append([InlineKeyboardButton(" 🔄 Try Again", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
         await client.send_message(
             chat_id=message.from_user.id,
-            text="**Please Join My Updates Channel to use this Bot!**",
+            text="**Please Join My Updates Channel to use this Bot! After joining press TRY AGAIN to get the files**",
             reply_markup=InlineKeyboardMarkup(btn),
             parse_mode=enums.ParseMode.MARKDOWN
             )
@@ -91,7 +91,7 @@ async def start(client, message):
             InlineKeyboardButton('🔍 Search Movies/Series', switch_inline_query_current_chat='')
             ],[
             InlineKeyboardButton('Main Channel 🎞', url='https://t.me/central_links'),
-            InlineKeyboardButton('Request Group 🌏', url='https://t.me/central_request')
+            InlineKeyboardButton('Request Group 🌏', url='https://t.me/centralrequest')
             ],[
             InlineKeyboardButton('Support 💁', url='https://t.me/centrallinks_contactbot'),
             InlineKeyboardButton('About Meh ✨', callback_data='about')
