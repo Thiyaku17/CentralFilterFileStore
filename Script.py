@@ -2,7 +2,7 @@ class script(object):
     START_TXT = """<b>Hello ... {} 👋
 ✯ My Name is <a href=https://t.me/{}>{}</a>
 ✯ I Can Provide MOVIES,SERIES And Lot More
-✯ Don't Waste Your Time Looking To Add ME To Your Group , I'm Only For @Central_Request
+✯ Don't Waste Your Time Looking To Add ME To Your Group , I'm Only For @CentralRequest
 ✯ TEAM - @Central_Links</b>"""
     HELP_TXT = """<b>HEY {}
 Here Is The Help For My Channel</b>"""
@@ -12,7 +12,7 @@ Here Is The Help For My Channel</b>"""
 ✯ 𝙻𝙰𝙽𝙶𝚄𝙰𝙶𝙴: 𝙿𝚈𝚃𝙷𝙾𝙽 𝟹
 ✯ 𝙳𝙰𝚃𝙰 𝙱𝙰𝚂𝙴: 𝙼𝙾𝙽𝙶𝙾 𝙳𝙱
 ✯ 𝙱𝙾𝚃 𝚂𝙴𝚁𝚅𝙴𝚁: 𝙷𝙴𝚁𝙾𝙺𝚄
-✯ 𝙱𝚄𝙸𝙻𝙳 𝚂𝚃𝙰𝚃𝚄𝚂: v1.0.1 [ 𝙱𝙴𝚃𝙰 ]"""
+✯ 𝙱𝚄𝙸𝙻𝙳 𝚂𝚃𝙰𝚃𝚄𝚂: v2.0.1 [ 𝙱𝙴𝚃𝙰 ]"""
     SOURCE_TXT = """<b>NOTE:</b>
 - Central Request is a open source project. 
 - Source - <a href=https://t.me/Central_links>CLICK HERE</a>
