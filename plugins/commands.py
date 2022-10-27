@@ -81,7 +81,7 @@ async def start(client, message):
                 btn.append([InlineKeyboardButton(" 🔄 Try Again", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
         await client.send_message(
             chat_id=message.from_user.id,
-            text="**Please Join My Updates Channel to use this Bot! After joining press TRY AGAIN to get the files**",
+            text="**Please Join My Updates Channel [@Central_Links] to use this Bot! After joining press TRY AGAIN to get the files \nUnless You Join the Channel[@Central_Links],You Cannot get The Files**",
             reply_markup=InlineKeyboardMarkup(btn),
             parse_mode=enums.ParseMode.MARKDOWN
             )
