@@ -48,7 +48,7 @@ async def next_page(bot, query):
         offset = 0
     search = BUTTONS.get(key)
     if not search:
-        await query.answer("<b>You are using one of my old messages, please send the request again.</b>", show_alert=True)
+        await query.answer("You are using one of my old messages, please send the request again.", show_alert=True)
         return
 
     files, n_offset, total = await get_search_results(search, offset=offset, filter=True)
@@ -120,7 +120,7 @@ async def next_page(bot, query):
 async def advantage_spoll_choker(bot, query):
     _, user, movie_ = query.data.split('#')
     if int(user) != 0 and query.from_user.id != int(user):
-        return await query.answer("<b>Search The Correct Movie/Series Spelling In GOOGLE.COM \n\n Then Type In Our Group Once More ... \n\n Click/Select Only Movie Name NOT THE Movie Name with Year</b>", show_alert=True)
+        return await query.answer("<b>Search The Correct Movie/Series Spelling In GOOGLE.COM \nThen Type In Our Group Once More ... \n\nPress only the Movie/Series name ONCE (without year)</b>", show_alert=True)
     if movie_ == "close_spellcheck":
         return await query.message.delete()
     movies = SPELL_CHECK.get(query.message.reply_to_message.id)
@@ -135,8 +135,8 @@ async def advantage_spoll_choker(bot, query):
             k = (movie, files, offset, total_results)
             await auto_filter(bot, query, k)
         else:
-            k = await query.message.edit("<b>Search The Correct Movie/Series Spelling In GOOGLE.COM \n\n Then Type In Our Group Once More ... \n\n Click/Select Only Movie Name NOT THE Movie Name with Year \n\n If it doesn't respond please Type the movie/series name in @CentralLinks_Contactbot ... \n\n Admin will try to add it soon</b>")
-            await asyncio.sleep(10)
+            k = await query.message.edit("<b>Search The Correct Movie/Series Spelling In GOOGLE.COM \nThen Type In Our Group Once More ... \n\nPress only the Movie/Series name ONCE (without year) \n\nIf it doesn't respond please Type the movie/series name in @CentralLinks_Contactbot ... \n\nAdmin will try to add it soon</b>")
+            await asyncio.sleep(30)
             await k.delete()
 
 
@@ -373,7 +373,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
     elif query.data.startswith("checksub"):
         if AUTH_CHANNEL and not await is_subscribed(client, query):
-            await query.answer("I Like Your Smartness, But Don't Be Oversmart 😒\n\n Join - @Central_Links To Get the Movies Or Series Files", show_alert=True)
+            await query.answer("I Like Your Smartness, But Don't Be Oversmart 😒\n\nJoin - @Central_Links To Get the Movies Or Series Files", show_alert=True)
             return
         ident, file_id = query.data.split("#")
         files_ = await get_file_details(file_id)
@@ -708,7 +708,7 @@ async def auto_filter(client, msg, spoll=False):
             **locals()
         )
     else:
-        cap = f"<b>Here is what i found for your query</b> `{search}` \n\n<b>🔗 Join : @Central_Links🔗 ... \n\nTry To Forward This Message to Saved Messages or to our Friend \n\n It will be deleted after 3 minutes</b>"
+        cap = f"<b>Here is what i found for your query</b> `{search}` \n\n<b>🔗 Join : @Central_Links 🔗 ... \n\nTry To Forward This Message to Saved Messages or to our Friend \nIt will be deleted after 5 minutes</b>"
     if imdb and imdb.get('poster'):
         try:
             mama = await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
@@ -769,8 +769,8 @@ async def advantage_spell_chok(msg):
     movielist += [(re.sub(r'(\-|\(|\)|_)', '', i, flags=re.IGNORECASE)).strip() for i in gs_parsed]
     movielist = list(dict.fromkeys(movielist))  # removing duplicates
     if not movielist:
-        k = await msg.reply("<b>I couldn't find anything related to that. Check your spelling OR Search in google.com \n\n Click/Select Only Movie Name NOT THE Movie Name with Year</b>")
-        await asyncio.sleep(8)
+        k = await msg.reply("<b>I couldn't find anything related to that. Check your spelling OR Search in GOOGLE.COM \n\nPress only the Movie/Series name ONCE (without year)</b>")
+        await asyncio.sleep(30)
         await k.delete()
         return
     SPELL_CHECK[msg.id] = movielist
@@ -781,9 +781,9 @@ async def advantage_spell_chok(msg):
         )
     ] for k, movie in enumerate(movielist)]
     btn.append([InlineKeyboardButton(text="Close", callback_data=f'spolling#{user}#close_spellcheck')])
-    s = await msg.reply("<b>I couldn't find anything related to that \n\n Search in google.com\n\n Did you mean any one of these? \n\nPress the only Movie/Series name ONCE (without year) \n\n \n\n Click/Select Only Movie Name NOT THE Movie Name with Year</b>",
+    s = await msg.reply("<b>I couldn't find anything related to that. :( Check your spelling OR Search in GOOGLE.COM \n\nDid you mean any one of these? \n\nPress only the Movie/Series name ONCE (without year)</b>",
                     reply_markup=InlineKeyboardMarkup(btn))
-    await asyncio.sleep(10)
+    await asyncio.sleep(30)
     await s.delete()
 
 async def manual_filters(client, message, text=False):
