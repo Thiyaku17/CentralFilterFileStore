@@ -711,17 +711,22 @@ async def auto_filter(client, msg, spoll=False):
         cap = f"<b>Here is what i found for your query</b> `{search}` \n\n<b>🔗 Join : @Central_Links🔗 ... \n\nTry To Forward This Message to Saved Messages or to our Friend \n\n It will be deleted after 3 minutes</b>"
     if imdb and imdb.get('poster'):
         try:
-            await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
+            mama = await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
                                       reply_markup=InlineKeyboardMarkup(btn))
+            await asyncio.sleep(300)
+            await message.delete()
+            await mama.delete()
         except (MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty):
             pic = imdb.get('poster')
             poster = pic.replace('.jpg', "._V1_UX360.jpg")
             await message.reply_photo(photo=poster, caption=cap[:1024], reply_markup=InlineKeyboardMarkup(btn))
         except Exception as e:
             logger.exception(e)
-            await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
     else:
-        await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+        hola = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+        await asyncio.sleep(300)
+        await message.delete()
+        return await hola.delete()
     if spoll:
         await msg.message.delete()
 
@@ -776,9 +781,10 @@ async def advantage_spell_chok(msg):
         )
     ] for k, movie in enumerate(movielist)]
     btn.append([InlineKeyboardButton(text="Close", callback_data=f'spolling#{user}#close_spellcheck')])
-    await msg.reply("<b>I couldn't find anything related to that \n\n Search in google.com\n\n Did you mean any one of these? \n\nPress the only Movie/Series name ONCE (without year) \n\n \n\n Click/Select Only Movie Name NOT THE Movie Name with Year</b>",
+    s = await msg.reply("<b>I couldn't find anything related to that \n\n Search in google.com\n\n Did you mean any one of these? \n\nPress the only Movie/Series name ONCE (without year) \n\n \n\n Click/Select Only Movie Name NOT THE Movie Name with Year</b>",
                     reply_markup=InlineKeyboardMarkup(btn))
-
+    await asyncio.sleep(10)
+    await s.delete()
 
 async def manual_filters(client, message, text=False):
     group_id = message.chat.id
@@ -831,3 +837,4 @@ async def manual_filters(client, message, text=False):
                 break
     else:
         return False
+        
