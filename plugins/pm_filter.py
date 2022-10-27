@@ -708,12 +708,12 @@ async def auto_filter(client, msg, spoll=False):
             **locals()
         )
     else:
-        cap = f"<b>Here is what i found for your query</b> `{search}` \n\n<b>🔗 Join : @Central_Links 🔗 ... \n\nTry To Forward This Message to Saved Messages or to our Friend \nIt will be deleted after 5 minutes</b>"
+        cap = f"<b>Here is what i found for your query</b> `{search}` \n\n<b>🔗 Join : @Central_Links 🔗 ... \n\nTry To Forward This Message to Saved Messages or to our Friend \nIt will be deleted after 3 minutes</b>"
     if imdb and imdb.get('poster'):
         try:
             mama = await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
                                       reply_markup=InlineKeyboardMarkup(btn))
-            await asyncio.sleep(300)
+            await asyncio.sleep(180)
             await message.delete()
             await mama.delete()
         except (MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty):
@@ -724,7 +724,7 @@ async def auto_filter(client, msg, spoll=False):
             logger.exception(e)
     else:
         hola = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
-        await asyncio.sleep(300)
+        await asyncio.sleep(180)
         await message.delete()
         return await hola.delete()
     if spoll:
@@ -741,7 +741,7 @@ async def advantage_spell_chok(msg):
     gs_parsed = []
     if not g_s:
         k = await msg.reply("I couldn't find any movie in that name.")
-        await asyncio.sleep(8)
+        await asyncio.sleep(10)
         await k.delete()
         return
     regex = re.compile(r".*(imdb|wikipedia).*", re.IGNORECASE)  # look for imdb / wiki results
