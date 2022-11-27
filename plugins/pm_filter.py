@@ -1,15 +1,14 @@
-# Kanged From @TroJanZheX
 import asyncio
 import re
 import ast
 import math
+from utils import get_shortlink
 from pyrogram.errors.exceptions.bad_request_400 import MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty
 from Script import script
 import pyrogram
 from database.connections_mdb import active_connection, all_connections, delete_connection, if_active, make_active, \
     make_inactive
-from info import ADMINS, AUTH_CHANNEL, AUTH_USERS, CUSTOM_FILE_CAPTION, AUTH_GROUPS, P_TTI_SHOW_OFF, IMDB, \
-    SINGLE_BUTTON, SPELL_CHECK_REPLY, IMDB_TEMPLATE
+from info import *
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid
@@ -28,7 +27,29 @@ logger.setLevel(logging.ERROR)
 
 BUTTONS = {}
 SPELL_CHECK = {}
+FILTER_MODE = {}
 
+@Client.on_message(filters.command('autofilter'))
+async def fil_mod(client, message): 
+      mode_on = ["yes", "on", "true"]
+      mode_of = ["no", "off", "false"]
+
+      try: 
+         args = message.text.split(None, 1)[1].lower() 
+      except: 
+         return await message.reply("**𝙸𝙽𝙲𝙾𝙼𝙿𝙻𝙴𝚃𝙴 𝙲𝙾𝙼𝙼𝙰𝙽𝙳...**")
+      
+      m = await message.reply("**SETTINGS.../**")
+
+      if args in mode_on:
+          FILTER_MODE[str(message.chat.id)] = "True" 
+          await m.edit("**AUTOFILTER ENABLED**")
+      
+      elif args in mode_of:
+          FILTER_MODE[str(message.chat.id)] = "False"
+          await m.edit("**𝙰𝚄𝚃𝙾𝙵𝙸𝙻𝚃𝙴𝚁 𝙳𝙸𝚂𝙰𝙱𝙻𝙴𝙳**")
+      else:
+          await m.edit("USE :- /autofilter on 𝙾𝚁 /autofilter off")
 
 @Client.on_message((filters.group | filters.private) & filters.text & filters.incoming)
 async def give_filter(client, message):
@@ -64,7 +85,8 @@ async def next_page(bot, query):
         btn = [
             [
                 InlineKeyboardButton(
-                    text=f"[{get_size(file.file_size)}] {file.file_name}", callback_data=f'files#{file.file_id}'
+                    text=f"[{get_size(file.file_size)}] {file.file_name}", 
+                    url=await get_shortlink(f"https://telegram.dog/{temp.U_NAME}?start=files_{file.file_id}")
                 ),
             ]
             for file in files
@@ -73,15 +95,22 @@ async def next_page(bot, query):
         btn = [
             [
                 InlineKeyboardButton(
-                    text=f"{file.file_name}", callback_data=f'files#{file.file_id}'
+                    text=f"[{get_size(file.file_size)}] {file.file_name}", 
+                    url=await get_shortlink(f"https://telegram.dog/{temp.U_NAME}?start=files_{file.file_id}")
                 ),
                 InlineKeyboardButton(
-                    text=f"{get_size(file.file_size)}",
-                    callback_data=f'files_#{file.file_id}',
+                    text=f"[{get_size(file.file_size)}] {file.file_name}", 
+                    url=await get_shortlink(f"https://t.me/{temp.U_NAME}?start=files_{file.file_id}")
                 ),
             ]
             for file in files
         ]
+
+    btn.insert(0,
+        [
+            InlineKeyboardButton(text="⚡HOW TO DOWNLOAD⚡", url='https://www.youtube.com/watch?v=hyQ_WNSwSE4')
+        ]
+    )
 
     if 0 < offset <= 10:
         off_set = 0
@@ -120,7 +149,7 @@ async def next_page(bot, query):
 async def advantage_spoll_choker(bot, query):
     _, user, movie_ = query.data.split('#')
     if int(user) != 0 and query.from_user.id != int(user):
-        return await query.answer("<b>Search The Correct Movie/Series Spelling In GOOGLE.COM \nThen Type In Our Group Once More ... \n\nPress only the Movie/Series name ONCE (without year)</b>", show_alert=True)
+        return await query.answer("😁 𝗛𝗲𝘆 𝗙𝗿𝗶𝗲𝗻𝗱,𝗣𝗹𝗲𝗮𝘀𝗲 𝗦𝗲𝗮𝗿𝗰𝗵 𝗬𝗼𝘂𝗿𝘀𝗲𝗹𝗳.", show_alert=True)
     if movie_ == "close_spellcheck":
         return await query.message.delete()
     movies = SPELL_CHECK.get(query.message.reply_to_message.id)
@@ -352,10 +381,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
 
         try:
             if AUTH_CHANNEL and not await is_subscribed(client, query):
-                await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+                await query.answer(url=f"https://telegram.dog/{temp.U_NAME}?start={ident}_{file_id}")
                 return
             elif settings['botpm']:
-                await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+                await query.answer(url=f"https://telegram.dog/{temp.U_NAME}?start={ident}_{file_id}")
                 return
             else:
                 await client.send_cached_media(
@@ -368,9 +397,9 @@ async def cb_handler(client: Client, query: CallbackQuery):
         except UserIsBlocked:
             await query.answer('Unblock the bot dude !', show_alert=True)
         except PeerIdInvalid:
-            await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+            await query.answer(url=f"https://telegram.dog/{temp.U_NAME}?start={ident}_{file_id}")
         except Exception as e:
-            await query.answer(url=f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
+            await query.answer(url=f"https://telegram.dog/{temp.U_NAME}?start={ident}_{file_id}")
     elif query.data.startswith("checksub"):
         if AUTH_CHANNEL and not await is_subscribed(client, query):
             await query.answer("I Like Your Smartness, But Don't Be Oversmart 😒\n\nJoin - @Central_Links To Get the Movies Or Series Files", show_alert=True)
@@ -410,7 +439,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('Request Group 🔗', url='https://t.me/centralrequest')
             ],[
             InlineKeyboardButton('Support 💁', url='https://t.me/CentralLinks_Contactbot'),
-            InlineKeyboardButton('About Meh 📬', callback_data='about')
+            InlineKeyboardButton('About ME 📬', callback_data='about')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await query.message.edit_text(
@@ -525,7 +554,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
     elif query.data == "stats":
         buttons = [[
             InlineKeyboardButton('👩‍🦯 Back', callback_data='help'),
-            InlineKeyboardButton('♻️', callback_data='rfrsh')
+            InlineKeyboardButton('♻️ Refresh', callback_data='rfrsh')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         total = await Media.count_documents()
@@ -544,7 +573,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await query.answer("Fetching MongoDb DataBase")
         buttons = [[
             InlineKeyboardButton('👩‍🦯 Back', callback_data='help'),
-            InlineKeyboardButton('♻️', callback_data='rfrsh')
+            InlineKeyboardButton('♻️ Refresh', callback_data='rfrsh')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         total = await Media.count_documents()
@@ -641,7 +670,8 @@ async def auto_filter(client, msg, spoll=False):
         btn = [
             [
                 InlineKeyboardButton(
-                    text=f"[{get_size(file.file_size)}] {file.file_name}", callback_data=f'{pre}#{file.file_id}'
+                    text=f"[{get_size(file.file_size)}] {file.file_name}", 
+                    url=await get_shortlink(f"https://telegram.dog/{temp.U_NAME}?start=files_{file.file_id}")
                 ),
             ]
             for file in files
@@ -650,16 +680,22 @@ async def auto_filter(client, msg, spoll=False):
         btn = [
             [
                 InlineKeyboardButton(
-                    text=f"{file.file_name}",
-                    callback_data=f'{pre}#{file.file_id}',
+                    text=f"[{get_size(file.file_size)}] {file.file_name}", 
+                    url=await get_shortlink(f"https://telegram.dog/{temp.U_NAME}?start=files_{file.file_id}")
                 ),
                 InlineKeyboardButton(
-                    text=f"{get_size(file.file_size)}",
-                    callback_data=f'{pre}#{file.file_id}',
+                    text=f"[{get_size(file.file_size)}] {file.file_name}", 
+                    url=await get_shortlink(f"https://telegram.dog/{temp.U_NAME}?start=files_{file.file_id}")
                 ),
             ]
             for file in files
         ]
+
+    btn.insert(0,
+        [
+            InlineKeyboardButton(text="⚡ʜᴏᴡ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ⚡", url='https://www.youtube.com/watch?v=hyQ_WNSwSE4')
+        ]
+    )
 
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
@@ -711,22 +747,29 @@ async def auto_filter(client, msg, spoll=False):
         cap = f"<b>Here is what i found for your query</b> `{search}` \n\n<b>🔗 Join : @Central_Links 🔗 ... \n\nTry To Forward This Message to Saved Messages or to our Friend \nIt will be deleted after 3 minutes</b>"
     if imdb and imdb.get('poster'):
         try:
-            mama = await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
+            hehe = await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
                                       reply_markup=InlineKeyboardMarkup(btn))
-            await asyncio.sleep(180)
-            await message.delete()
-            await mama.delete()
+            if SELF_DELETE:
+                await asyncio.sleep(SELF_DELETE_SECONDS)
+                await hehe.delete()
         except (MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty):
             pic = imdb.get('poster')
             poster = pic.replace('.jpg', "._V1_UX360.jpg")
-            await message.reply_photo(photo=poster, caption=cap[:1024], reply_markup=InlineKeyboardMarkup(btn))
+            hmm = await message.reply_photo(photo=poster, caption=cap[:1024], reply_markup=InlineKeyboardMarkup(btn))
+            if SELF_DELETE:
+                await asyncio.sleep(SELF_DELETE_SECONDS)
+                await hmm.delete()
         except Exception as e:
             logger.exception(e)
+            fek = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+            if SELF_DELETE:
+                await asyncio.sleep(SELF_DELETE_SECONDS)
+                await fek.delete()
     else:
-        hola = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
-        await asyncio.sleep(180)
-        await message.delete()
-        return await hola.delete()
+        fuk = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+        if SELF_DELETE:
+            await asyncio.sleep(SELF_DELETE_SECONDS)
+            await fuk.delete()
     if spoll:
         await msg.message.delete()
 
