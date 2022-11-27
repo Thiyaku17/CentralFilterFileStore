@@ -8,7 +8,7 @@ from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from database.ia_filterdb import Media, get_file_details, unpack_new_file_id
 from database.users_chats_db import db
-from info import CHANNELS, ADMINS, AUTH_CHANNEL, LOG_CHANNEL, PICS, BATCH_FILE_CAPTION, CUSTOM_FILE_CAPTION, PROTECT_CONTENT
+from info import *
 from utils import get_settings, get_size, is_subscribed, save_group_settings, temp
 from database.connections_mdb import active_connection
 import re
@@ -23,10 +23,13 @@ async def start(client, message):
     if message.chat.type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
         buttons = [
             [
-                InlineKeyboardButton('🤖 Updates', url='https://t.me/central_links')
+                InlineKeyboardButton('⚡UPDATES⚡', url='https://t.me/central_links')
             ],
             [
-                InlineKeyboardButton('Join Our Group 🌏', url=f"https://t.me/centralrequest"),
+                InlineKeyboardButton('⚡INVITE LINK⚡', url=f"https://t.me/centralrequest"),
+            ],
+            [
+                InlineKeyboardButton(text=DOWNLOAD_TEXT_NAME,url=DOWNLOAD_TEXT_URL)
             ]
             ]
         reply_markup = InlineKeyboardMarkup(buttons)
@@ -44,11 +47,11 @@ async def start(client, message):
         buttons = [[
             InlineKeyboardButton('🔍 Search Movies/Series', switch_inline_query_current_chat='')
             ],[
-            InlineKeyboardButton('Main Channel 🎞', url='https://t.me/central_links'),
-            InlineKeyboardButton('Request Group 🌏', url='https://t.me/centralrequest')
+            InlineKeyboardButton('Main Channel 🎞', url='https://telegram.dog/central_links'),
+            InlineKeyboardButton('Request Group 🌏', url='https://telegram.dog/centralrequest')
             ],[
-            InlineKeyboardButton('Support 💁', url='https://t.me/centrallinks_contactbot'),
-            InlineKeyboardButton('About Meh ✨', callback_data='about')
+            InlineKeyboardButton('Support 💁', url='https://telegram.dog/centrallinks_contactbot'),
+            InlineKeyboardButton('About ME ✨', callback_data='about')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply_photo(
@@ -78,7 +81,7 @@ async def start(client, message):
                 pre = 'checksubp' if kk == 'filep' else 'checksub' 
                 btn.append([InlineKeyboardButton(" 🔄 Try Again", callback_data=f"{pre}#{file_id}")])
             except (IndexError, ValueError):
-                btn.append([InlineKeyboardButton(" 🔄 Try Again", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
+                btn.append([InlineKeyboardButton(" 🔄 Try Again", url=f"https://telegram.dog/{temp.U_NAME}?start={message.command[1]}")])
         await client.send_message(
             chat_id=message.from_user.id,
             text="**Please Join My Updates Channel [@Central_Links] to use this Bot! After joining press TRY AGAIN to get the files \nUnless You Join the Channel[@Central_Links],You Cannot get The Files**",
@@ -94,7 +97,7 @@ async def start(client, message):
             InlineKeyboardButton('Request Group 🌏', url='https://t.me/centralrequest')
             ],[
             InlineKeyboardButton('Support 💁', url='https://t.me/centrallinks_contactbot'),
-            InlineKeyboardButton('About Meh ✨', callback_data='about')
+            InlineKeyboardButton('About ME ✨', callback_data='about')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply_photo(
@@ -244,6 +247,7 @@ async def start(client, message):
         chat_id=message.from_user.id,
         file_id=file_id,
         caption=f_caption,
+        reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('UPDATES', url='https://telegram.dog/central_links') ] ] ),
         protect_content=True if pre == 'filep' else False,
         )
                     
