@@ -23,7 +23,7 @@ async def start(client, message):
     if message.chat.type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
         buttons = [
             [
-                InlineKeyboardButton('⚡UPDATES⚡', url='https://t.me/central_links')
+                InlineKeyboardButton('⚡UPDATES CHANNEL⚡', url='https://t.me/central_links')
             ],
             [
                 InlineKeyboardButton('⚡INVITE LINK⚡', url=f"https://t.me/centralrequest"),
@@ -247,7 +247,7 @@ async def start(client, message):
         chat_id=message.from_user.id,
         file_id=file_id,
         caption=f_caption,
-        reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('UPDATES', url='https://telegram.dog/central_links') ] ] ),
+        reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('⚡UPDATES CHANNEL⚡', url='https://telegram.dog/central_links') ] ] ),
         protect_content=True if pre == 'filep' else False,
         )
                     
